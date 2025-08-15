@@ -1,0 +1,27 @@
+# OS系
+.DS_Store
+Thumbs.db
+
+# PHPStorm / IDE系
+.idea/
+.vscode/
+
+# PHP / Composer
+vendor/
+composer.lock
+
+# キャッシュ / 一時ファイル
+*.log
+*.cache
+*.tmp
+
+# アップロード画像フォルダ
+uploads/
+
+# 環境設定ファイル
+config.php
+.env
+
+# デバッグ用ファイル
+*.sql
+*.sqlite
