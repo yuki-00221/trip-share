@@ -35,18 +35,21 @@ tripshare/
 ├─ config/
 │   ├─ config.php           # サイト設定（DB接続情報など）
 │   ├─ db_connect.php       # DB接続用
+│   ├─ db_drop.php          # テーブル削除用
+│   ├─ db_init.php          # テーブル作成用
 │   └─ functions.php        # 共通関数（サニタイズ、スコア計算、地図データ取得など）
 ├─ public/
 │   ├─ index.php            # 投稿一覧（全件表示）
-│   ├─ register.php         # ユーザー登録
-│   ├─ login.php            # ログイン
+│   ├─ login_process.php    # ログイン処理
+│   ├─ login.php            # ログイン画面
 │   ├─ logout.php           # ログアウト
 │   ├─ mypage.php           # マイページ（プロフィール＋投稿一覧＋訪問地図）
+│   ├─ post_delete.php      # 投稿削除処理
+│   ├─ post_detail.php      # 投稿詳細表示
 │   ├─ post_form.php        # 投稿フォーム（新規投稿 / 編集兼用）
 │   ├─ post_save.php        # 投稿保存処理（新規 / 編集）
-│   ├─ post_delete.php      # 投稿削除処理
 │   ├─ prefecture.php       # 都道府県別投稿表示
-│   ├─ post_detail.php      # 投稿詳細表示
+│   ├─ register.php         # ユーザー登録
 │   ├─ assets/
 │   │   ├─ css/style.css
 │   │   ├─ js/main.js       # 自作JS + 地図描画
@@ -60,10 +63,7 @@ tripshare/
 ├─ sql/
 │   └─ tripshare_schema.sql  # DBスキーマ
 └─ docs/
-    ├─ ERD.md
-    ├─ features.md
-    ├─ proposal.md
-    └─ screenflow.md
+    └─ proposal.md
 ```
 
 ### 技術構成
@@ -72,7 +72,7 @@ tripshare/
 - データベース: MySQL（ユーザーテーブル、投稿テーブルなど複数テーブル）
 
 ### DB構成
-- users：ユーザー情報（ID，ユーザー名，表示名，パスワード）
+- users：ユーザー情報（ID，ユーザー名，パスワード，登録日）
 - posts：旅行記情報（ID，ユーザーID，タイトル，本文，画像パス，都道府県，旅行日，投稿日）
 
 ## 使い方
