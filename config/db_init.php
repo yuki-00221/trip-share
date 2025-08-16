@@ -9,5 +9,20 @@
           .'created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP'
           .');';
     $stmt = $pdo->query($sql);
-    echo 'created table "users"'
+    echo 'created table "users"</br>';
+
+    $sql = 'CREATE TABLE IF NOT EXISTS posts'
+          .'('
+          .'id INT AUTO_INCREMENT PRIMARY KEY,'
+          .'user_id INT NOT NULL,'
+          .'title VARCHAR(255) NOT NULL,'
+          .'body TEXT NOT NULL,'
+          .'prefecture VARCHAR(50) NOT NULL,'
+          .'travel_date DATE NOT NULL,'
+          .' image_path VARCHAR(255),'
+          .'created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,'
+          .'FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE'
+          .');';
+    $stmt = $pdo->query($sql);
+    echo 'created table "posts"</br>'
 ?>
