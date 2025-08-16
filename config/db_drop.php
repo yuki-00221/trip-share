@@ -3,5 +3,9 @@
 
     $sql = 'DROP TABLE users';
     $stmt = $pdo->query($sql);
-    echo 'deleted table "users"'
+    echo 'deleted table "users"</br>';
+
+    $sql = 'DROP TABLE posts';
+    $stmt = $pdo->query($sql);
+    echo 'deleted table "posts</br>"';
 ?>
