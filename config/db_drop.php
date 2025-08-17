@@ -7,5 +7,5 @@
 
     $sql = 'DROP TABLE posts';
     $stmt = $pdo->query($sql);
-    echo 'deleted table "posts</br>"';
+    echo 'deleted table "posts"</br>';
 ?>

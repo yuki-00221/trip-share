@@ -46,4 +46,9 @@
     </p>
 <?php endif; ?>
 
-<p><a href="index.php">一覧に戻る</a></p>
+<?php
+$back_url = $_SERVER['HTTP_REFERER'] ?? 'index.php';
+?>
+
+<p><a href="<?= htmlspecialchars($back_url, ENT_QUOTES, 'UTF-8') ?>">← 戻る</a></p>
+
