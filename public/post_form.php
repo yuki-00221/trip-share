@@ -47,6 +47,7 @@
 <html lang="ja">
     <head>
         <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
        <title><?= $is_edit ? '投稿編集 - TripShare' : '新規投稿 - TripShare' ?></title>
         <link rel="stylesheet" href="assets/css/style.css">
     </head>
@@ -104,5 +105,7 @@
 
             <button type="submit"><?= $is_edit ? '更新する' : '投稿する' ?></button>
         </form>
+
+        <button onclick="history.back()" class="btn btn-back">戻る</button>
     </body>
 </html>

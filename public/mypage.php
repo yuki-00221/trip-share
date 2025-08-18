@@ -12,7 +12,12 @@
     $stmt->execute();
     $user = $stmt->fetch();
 
-    $stmt = $pdo->prepare('SELECT * FROM posts WHERE user_id = :uid ORDER BY created_at DESC');
+    $stmt = $pdo->prepare('SELECT posts.*, users.username 
+                            FROM posts
+                            JOIN users ON posts.user_id = users.id
+                            WHERE posts.user_id = :uid
+                            ORDER BY posts.created_at DESC
+                            ');
     $stmt->bindValue(':uid', $_SESSION['user_id'], PDO::PARAM_INT);
     $stmt->execute();
     $posts = $stmt->fetchAll();
@@ -45,6 +50,7 @@
 <html lang="ja">
     <head>
         <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>マイページ - TripShare</title>
         <link rel="stylesheet" href="assets/css/style.css">
         <script type="text/javascript" src="https://unpkg.com/japan-map-js@1.0.1/dist/jpmap.min.js"></script>
@@ -61,7 +67,7 @@
         <a href="post_form.php">＋ 新規投稿</a>
 
         <h3>訪問した都道府県</h3>
-        <div id="japan-map"></div>
+        <div id="japan-map" class="map-container"></div>
 
         <script>
             var visitedPrefs = <?php echo json_encode($visited_prefs); ?>;
@@ -77,7 +83,7 @@
 
             var d = new jpmap.japanMap(document.getElementById("japan-map"), {
             showsPrefectureName: false, //都道府県名を表示させる
-            width: 600,　//横幅のサイズ
+             width: document.getElementById("japan-map").offsetWidth,
             movesIslands: true, //沖縄地方が地図の左上の分離されたスペースに移動する
             lang: 'ja', //表示させている都道府県名を日本語にする
             areas: areas,
@@ -90,20 +96,29 @@
         <h3>あなたの投稿一覧</h3>
 
         <?php if($posts): ?>
-            <ul>
+            <div class="post-list">
                 <?php foreach($posts as $post): ?>
-                    <li>
-                        <a href="post_detail.php?id=<?= $post['id'] ?>">
-                            <?= htmlspecialchars($post['title'], ENT_QUOTES, 'UTF-8') ?>
-                        </a>
-                        （<?= htmlspecialchars($post['travel_date'], ENT_QUOTES, 'UTF-8') ?>）
-                        |
-                        <a href="post_form.php?id=<?= $post['id'] ?>">編集</a>
-                        |
-                        <a href="post_delete.php?id=<?= $post['id'] ?>" onclick="return confirm('本当に削除しますか？');">削除</a>
-                    </li>
+                    <a href="post_detail.php?id=<?= $post['id'] ?>" class="post-card-link">
+                        <div class="post-card">
+                            <?php if ($post['image_path']): ?>
+                                <img src="<?= htmlspecialchars($post['image_path'], ENT_QUOTES, 'UTF-8') ?>" alt="<?= htmlspecialchars($post['title'], ENT_QUOTES, 'UTF-8') ?>">
+                            <?php endif; ?>
+                            <h3><?= htmlspecialchars($post['title'], ENT_QUOTES, 'UTF-8') ?></h3>
+                            <p class="meta">投稿者: <?= htmlspecialchars($post['username'], ENT_QUOTES, 'UTF-8') ?></p>
+                            <p class="meta">都道府県: <?= htmlspecialchars($post['prefecture'], ENT_QUOTES, 'UTF-8') ?></p>
+                            <p class="meta">旅行日: <?= htmlspecialchars($post['travel_date'], ENT_QUOTES, 'UTF-8') ?></p>
+                            <?php 
+                                $body = htmlspecialchars($post['body'], ENT_QUOTES, 'UTF-8');
+                                $short_body = mb_substr($body, 0, 30);
+                                if (mb_strlen($body) > 30) {
+                                    $short_body .= '...';
+                                }
+                            ?>
+                            <p><?= nl2br($short_body) ?></p>
+                        </div>
+                    </a>
                 <?php endforeach; ?>
-            </ul>
+            </div>
         <?php else: ?>
             <p>まだ投稿がありません。</p>
         <?php endif; ?>

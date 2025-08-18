@@ -36,11 +36,12 @@
 <html lang="ja">
     <head>
         <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>ユーザー登録 - TripShare</title>
         <link rel="stylesheet" href="assets/css/style.css">
     </head>
     <body>
-        <h1>ユーザー登録</h1>
+        <h2>ユーザー登録</h2>
 
         <?php
             if(isset($_SESSION['error'])) {

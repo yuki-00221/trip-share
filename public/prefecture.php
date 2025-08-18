@@ -1,4 +1,5 @@
 <?php
+session_start();
 require_once('../config/db_connect.php');
 
 $pref_code = isset($_GET['pref']) ? intval($_GET['pref']) : 0;
@@ -20,8 +21,16 @@ $pref_map = [
 $pref_name = isset($pref_map[$pref_code]) ? $pref_map[$pref_code] : '';
 
 if ($pref_name) {
-    $stmt = $pdo->prepare("SELECT * FROM posts WHERE prefecture = ? ORDER BY travel_date DESC");
-    $stmt->execute([$pref_name]);
+    $stmt = $pdo->prepare(
+        'SELECT posts.*, users.username
+        FROM posts
+        JOIN users ON posts.user_id = users.id
+        WHERE posts.user_id = :uid AND posts.prefecture = :prefecture
+        ORDER BY posts.created_at DESC'
+    );
+    $stmt->bindValue(':uid', $_SESSION['user_id'], PDO::PARAM_INT);
+    $stmt->bindValue(':prefecture', $pref_name, PDO::PARAM_STR);
+    $stmt->execute();
     $posts = $stmt->fetchAll(PDO::FETCH_ASSOC);
 } else {
     $posts = [];
@@ -33,6 +42,7 @@ if ($pref_name) {
 <html lang="ja">
     <head>
         <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title><?php echo htmlspecialchars($pref_name ?: '都道府県'); ?>の投稿 - TripShare</title>
         <link rel="stylesheet" href="assets/css/style.css">
     </head>
@@ -43,20 +53,29 @@ if ($pref_name) {
         <h2><?php echo htmlspecialchars($pref_name ?: '都道府県'); ?>の投稿一覧</h2>
 
         <?php if($posts !== []): ?>
-            <ul>
+            <div class="post-list">
                 <?php foreach($posts as $post): ?>
-                    <li>
-                        <a href="post_detail.php?id=<?= $post['id'] ?>">
-                            <?= htmlspecialchars($post['title'], ENT_QUOTES, 'UTF-8') ?>
-                        </a>
-                        （<?= htmlspecialchars($post['travel_date'], ENT_QUOTES, 'UTF-8') ?>）
-                        |
-                        <a href="post_form.php?id=<?= $post['id'] ?>">編集</a>
-                        |
-                        <a href="post_delete.php?id=<?= $post['id'] ?>" onclick="return confirm('本当に削除しますか？');">削除</a>
-                    </li>
+                    <a href="post_detail.php?id=<?= $post['id'] ?>" class="post-card-link">
+                        <div class="post-card">
+                            <?php if ($post['image_path']): ?>
+                                <img src="<?= htmlspecialchars($post['image_path'], ENT_QUOTES, 'UTF-8') ?>" alt="<?= htmlspecialchars($post['title'], ENT_QUOTES, 'UTF-8') ?>">
+                            <?php endif; ?>
+                            <h3><?= htmlspecialchars($post['title'], ENT_QUOTES, 'UTF-8') ?></h3>
+                            <p class="meta">投稿者: <?= htmlspecialchars($post['username'], ENT_QUOTES, 'UTF-8') ?></p>
+                            <p class="meta">都道府県: <?= htmlspecialchars($post['prefecture'], ENT_QUOTES, 'UTF-8') ?></p>
+                            <p class="meta">旅行日: <?= htmlspecialchars($post['travel_date'], ENT_QUOTES, 'UTF-8') ?></p>
+                            <?php 
+                                $body = htmlspecialchars($post['body'], ENT_QUOTES, 'UTF-8');
+                                $short_body = mb_substr($body, 0, 30);
+                                if (mb_strlen($body) > 30) {
+                                    $short_body .= '...';
+                                }
+                            ?>
+                            <p><?= nl2br($short_body) ?></p>
+                        </div>
+                    </a>
                 <?php endforeach; ?>
-            </ul>
+            </div>
         <?php else: ?>
             <p>まだ投稿がありません。</p>
         <?php endif; ?>
