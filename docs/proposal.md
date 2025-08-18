@@ -36,8 +36,7 @@ tripshare/
 │   ├─ config.php           # サイト設定（DB接続情報など）
 │   ├─ db_connect.php       # DB接続用
 │   ├─ db_drop.php          # テーブル削除用
-│   ├─ db_init.php          # テーブル作成用
-│   └─ functions.php        # 共通関数（サニタイズ、スコア計算、地図データ取得など）
+│   └─ db_init.php          # テーブル作成用
 ├─ public/
 │   ├─ index.php            # 投稿一覧（全件表示）
 │   ├─ login_process.php    # ログイン処理
@@ -52,16 +51,12 @@ tripshare/
 │   ├─ register.php         # ユーザー登録
 │   ├─ assets/
 │   │   ├─ css/style.css
-│   │   ├─ js/main.js       # 自作JS + 地図描画
-│   │   ├─ js/japanmap.min.js
 │   │   ├─ images/
 │   │   └─ uploads/        # 投稿画像保存先
 │   └─ templates/
 │       ├─ header.php
 │       ├─ footer.php
 │       └─ nav.php
-├─ sql/
-│   └─ tripshare_schema.sql  # DBスキーマ
 └─ docs/
     └─ proposal.md
 ```
