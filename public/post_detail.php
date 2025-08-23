@@ -1,34 +1,33 @@
 <?php
-    session_start();
-    require_once __DIR__ . '/../config/db_connect.php';
+session_start();
+if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
+    header('Location: index.php');
+    exit;
+}
 
-    if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
-        header('Location: index.php');
-        exit;
-    }
+$post_id = (int)$_GET['id'];
+require_once __DIR__ . '/../config/db_connect.php';
 
-    $post_id = (int)$_GET['id'];
+$stmt = $pdo->prepare('SELECT posts.*, users.username 
+                       FROM posts 
+                       JOIN users ON posts.user_id = users.id 
+                       WHERE posts.id = :id
+                       LIMIT 1');
+$stmt->bindValue(':id', $post_id, PDO::PARAM_INT);
+$stmt->execute();
+$post = $stmt->fetch();
 
-    $stmt = $pdo->prepare('
-        SELECT posts.*, users.username 
-        FROM posts 
-        JOIN users ON posts.user_id = users.id 
-        WHERE posts.id = ?
-        LIMIT 1
-    ');
-    $stmt->execute([$post_id]);
-    $post = $stmt->fetch();
+if (!$post) {
+    echo '投稿が見つかりません';
+    exit;
+}
 
-    if (!$post) {
-        echo '投稿が見つかりません';
-        exit;
-    }
-
-    include 'templates/header.php';
+include 'templates/header.php';
 ?>
 
+<!-- Here starts the display section -->
 <h2 class="back-h2">
-  <a href="javascript:history.back()">←</a> ポスト
+    <a href="javascript:history.back()">←</a> ポスト
 </h2>
 
 <div class="post-detail">
@@ -56,10 +55,5 @@
         </div>
     <?php endif; ?>
 </div>
-
-
-<?php
-$back_url = $_SERVER['HTTP_REFERER'] ?? 'index.php';
-?>
 
 <?php include 'templates/footer.php'; ?>

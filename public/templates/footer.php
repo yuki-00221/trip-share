@@ -2,4 +2,5 @@
     <p>&copy; <?= date("Y") ?> TripShare</p>
 </footer>
 </body>
+
 </html>
