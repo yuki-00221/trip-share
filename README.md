@@ -1,7 +1,10 @@
 # TripShare
 
 ## 概要
-TripShareは、ユーザーが自分の旅行記を投稿し、写真や感想を共有できるWebアプリケーションです。  
-都道府県別に投稿を紐付け、訪問した県の数に応じて「旅スコア」がアップします。  
-全国制覇を目指したり、他ユーザーの旅行記から旅のアイデアを得ることができます。
+TripShareは，ユーザーが旅行記を投稿・共有し，訪問都道府県の達成度を可視化できるWebアプリケーションです．  
+旅行好きのユーザーが自分の旅行体験を記録・公開したり，他ユーザーの旅行記を参考に旅行計画を立てたりできます．  
+詳細は[こちら](https://github.com/yuki-00221/trip-share/blob/main/docs/proposal.md)
+
+<img width="1920" height="1128" alt="image" src="https://github.com/user-attachments/assets/1f92a756-4749-4529-9a80-f84330648025" />
+<img width="1920" height="1128" alt="image" src="https://github.com/user-attachments/assets/5eb80bf8-5f96-4579-8472-ba02b50a0f8a" />
 
