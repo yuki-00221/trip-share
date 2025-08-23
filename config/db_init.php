@@ -19,7 +19,7 @@ $sql = 'CREATE TABLE IF NOT EXISTS posts'
       . 'body TEXT NOT NULL,'
       . 'prefecture VARCHAR(50) NOT NULL,'
       . 'travel_date DATE NOT NULL,'
-      . ' image_path VARCHAR(255),'
+      . 'image_path VARCHAR(255),'
       . 'created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,'
       . 'FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE'
       . ');';
