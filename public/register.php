@@ -30,42 +30,33 @@
             }
         }
     }
+    include 'templates/header.php';
 ?>
 
-<!DOCTYPE html>
-<html lang="ja">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>ユーザー登録 - TripShare</title>
-        <link rel="stylesheet" href="assets/css/style.css">
-    </head>
-    <body>
-        <h2>ユーザー登録</h2>
+<h2>ユーザー登録</h2>
 
-        <?php
-            if(isset($_SESSION['error'])) {
-                echo '<p style="color:red">' . $_SESSION['error'] . '</p>';
-                unset($_SESSION['error']);
-            }
-        ?>
+<?php
+    if(isset($_SESSION['error'])) {
+        echo '<p style="color:red">' . $_SESSION['error'] . '</p>';
+        unset($_SESSION['error']);
+    }
+?>
 
-        <form action="register.php" method="post">
-            <label>ユーザー名:<br>
-                <input type="text" name="username" required>
-            </label><br><br>
+<form action="register.php" method="post">
+    <label>ユーザー名:<br>
+        <input type="text" name="username" required>
+    </label><br><br>
 
-            <label>パスワード:<br>
-                <input type="password" name="password" required>
-            </label><br><br>
+    <label>パスワード:<br>
+        <input type="password" name="password" required>
+    </label><br><br>
 
-            <label>パスワード確認:<br>
-                <input type="password" name="password_confirm" required>
-            </label><br><br>
+    <label>パスワード確認:<br>
+        <input type="password" name="password_confirm" required>
+    </label><br><br>
 
-            <button type="submit">登録</button>
-        </form>
+    <button type="submit">登録</button>
+</form>
 
-        <p>既にアカウントをお持ちですか？ <a href="login.php">ログイン</a></p>
-    </body>
-</html>
+<p>既にアカウントをお持ちですか？ <a href="login.php">ログイン</a></p>
+<?php include 'templates/footer.php'; ?>

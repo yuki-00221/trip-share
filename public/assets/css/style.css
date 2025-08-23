@@ -12,7 +12,7 @@ body {
     line-height: 1.6;
     background-color: #f8f8f8;
     color: #333;
-    padding: 40px;
+    padding: 20px;
 }
 
 a {
@@ -60,12 +60,12 @@ nav a {
 =============================== */
 /* 投稿詳細 */
 .post-detail {
-    max-width: 800px;       /* 投稿詳細は広めに */
-    margin: 20px auto;      /* 上下余白＋中央寄せ */
-    padding: 15px;          /* 内側の余白 */
-    background-color: #fff; /* 背景色 */
-    border-radius: 10px;    /* 角丸 */
-    box-shadow: 0 2px 6px rgba(0,0,0,0.1); /* 軽い影 */
+    max-width: 800px;
+    margin: 20px auto;      /* 中央寄せ */
+    padding: 0;             /* 内側余白を削除 or 最小限に */
+    background-color: transparent; /* 背景を透明に */
+    border-radius: 0;       /* 角丸をなくす */
+    box-shadow: none;       /* 影を消す */
 }
 
 .post-detail h1 {
@@ -82,7 +82,7 @@ nav a {
 .post-image img {
     width: 100%;
     height: auto;
-    border-radius: 8px;
+    border-radius: 0;       /* 画像の角丸も削除 */
     margin-bottom: 15px;
 }
 
@@ -106,12 +106,13 @@ nav a {
 }
 
 .btn-edit {
-    background-color: #4caf50; /* 緑 */
+    background-color: #4caf50;
 }
 
 .btn-delete {
-    background-color: #f44336; /* 赤 */
+    background-color: #f44336;
 }
+
 
 /* ===============================
    フォーム
@@ -303,3 +304,108 @@ footer {
     padding: 10px; /* スマホでは少なめ */
     }
 }
+
+/* headerとか */
+/* ナビ全体 */
+.site-nav {
+    background-color: #333;
+    color: #fff;
+    padding: 0.5rem 1rem;
+}
+
+/* ヘッダー部分（タイトル＋ハンバーガー） */
+.nav-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* サイト名 */
+.site-nav h1 a {
+    color: #fff;
+    text-decoration: none;
+    font-size: 1.5rem;
+}
+
+/* ハンバーガーボタン */
+.nav-toggle {
+    font-size: 1.5rem;
+    background: none;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+}
+
+/* メニューリスト（初期は非表示） */
+.nav-menu {
+    display: none;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+/* メニューのリンク */
+.nav-menu li {
+    border-top: 1px solid #444;
+}
+.nav-menu li a {
+    display: block;
+    padding: 0.75rem;
+    color: #fff;
+    text-decoration: none;
+}
+.nav-menu li a:hover {
+    background-color: #555;
+}
+
+/* メニュー展開時 */
+.nav-menu.active {
+    display: block;
+}
+
+@media (max-width: 600px) {
+    .site-header{
+        height: auto;       /* 高さを自動にしても中央揃え */
+        flex-direction: column; /* 縦並びに変更 */
+        align-items: flex-start; /* 左寄せ */
+    }
+    .nav-menu li a {
+        width: 100%;        /* 画面幅に合わせる */
+    }
+}
+
+.new-post-btn {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 1000;
+}
+.fab-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 60px;
+  height: 60px;
+  background: #28a745;
+  color: #fff;
+  text-decoration: none;
+  border-radius: 50%;   /* 丸くする */
+  font-size: 28px;
+  font-weight: bold;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+  transition: background 0.2s, transform 0.1s;
+}
+.fab-btn:hover { background: #218838; text-decoration: none;}
+.fab-btn:active { transform: scale(0.95); }
+
+.back-h2 a {
+  color: inherit;        /* 矢印の色をh2に合わせる */
+  text-decoration: none; /* 下線なし */
+}
+
+.back-h2 a:hover {
+  text-decoration: none; /* ホバーしても下線なし */
+}
+
+
+

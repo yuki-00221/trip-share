@@ -44,85 +44,79 @@
             $visited_prefs[] = $pref_map[$name];
         }
     }
+    function extra_head() {
 ?>
-
-<!DOCTYPE html>
-<html lang="ja">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>マイページ - TripShare</title>
-        <link rel="stylesheet" href="assets/css/style.css">
         <script type="text/javascript" src="https://unpkg.com/japan-map-js@1.0.1/dist/jpmap.min.js"></script>
         <script type="text/javascript" src="dist/jpmap.min.js"></script>
-    </head>
-    <body>
+<?php
+    }
 
-        <?php include 'templates/nav.php'; ?>
+    include 'templates/header.php';
+?>
 
-        <h2>マイページ</h2>
+<h2>マイページ</h2>
 
-        <p>ようこそ、<?= htmlspecialchars($user['username'], ENT_QUOTES, 'UTF-8') ?> さん！</p>
+<p>ようこそ、<?= htmlspecialchars($user['username'], ENT_QUOTES, 'UTF-8') ?> さん！</p>
 
-        <a href="post_form.php">＋ 新規投稿</a>
+<div class="new-post-btn">
+  <a href="post_form.php" class="fab-btn">＋</a>
+</div>
 
-        <h3>訪問した都道府県</h3>
-        <div id="japan-map" class="map-container"></div>
+<h3>訪問した都道府県</h3>
+<div id="japan-map" class="map-container"></div>
 
-        <script>
-            var visitedPrefs = <?php echo json_encode($visited_prefs); ?>;
-            var allPrefs = Array.from({length: 47}, (_, i) => i + 1);
+<script>
+    var visitedPrefs = <?php echo json_encode($visited_prefs); ?>;
+    var allPrefs = Array.from({length: 47}, (_, i) => i + 1);
 
-            var areas = allPrefs.map(function(code) {
-                return {
-                    code: code,
-                    color: visitedPrefs.includes(code) ? "#4CAF50" : "#CCCCCC", // 緑 or グレー
-                    hoverColor: visitedPrefs.includes(code) ? "#66BB6A" : "#999999"
-                };
-            });
+    var areas = allPrefs.map(function(code) {
+        return {
+            code: code,
+            color: visitedPrefs.includes(code) ? "#4CAF50" : "#CCCCCC", // 緑 or グレー
+            hoverColor: visitedPrefs.includes(code) ? "#66BB6A" : "#999999"
+        };
+    });
 
-            var d = new jpmap.japanMap(document.getElementById("japan-map"), {
-            showsPrefectureName: false, //都道府県名を表示させる
-             width: document.getElementById("japan-map").offsetWidth,
-            movesIslands: true, //沖縄地方が地図の左上の分離されたスペースに移動する
-            lang: 'ja', //表示させている都道府県名を日本語にする
-            areas: areas,
-            onSelect: function(data){
-                window.location.href = 'prefecture.php?pref=' + data.code;
-            }
-            });
-        </script>
+    var d = new jpmap.japanMap(document.getElementById("japan-map"), {
+    showsPrefectureName: false, //都道府県名を表示させる
+        width: document.getElementById("japan-map").offsetWidth,
+    movesIslands: true, //沖縄地方が地図の左上の分離されたスペースに移動する
+    lang: 'ja', //表示させている都道府県名を日本語にする
+    areas: areas,
+    onSelect: function(data){
+        window.location.href = 'prefecture.php?pref=' + data.code;
+    }
+    });
+</script>
 
-        <h3>あなたの投稿一覧</h3>
+<h3>あなたの投稿一覧</h3>
 
-        <?php if($posts): ?>
-            <div class="post-list">
-                <?php foreach($posts as $post): ?>
-                    <a href="post_detail.php?id=<?= $post['id'] ?>" class="post-card-link">
-                        <div class="post-card">
-                            <?php if ($post['image_path']): ?>
-                                <img src="<?= htmlspecialchars($post['image_path'], ENT_QUOTES, 'UTF-8') ?>" alt="<?= htmlspecialchars($post['title'], ENT_QUOTES, 'UTF-8') ?>">
-                            <?php endif; ?>
-                            <h3><?= htmlspecialchars($post['title'], ENT_QUOTES, 'UTF-8') ?></h3>
-                            <p class="meta">投稿者: <?= htmlspecialchars($post['username'], ENT_QUOTES, 'UTF-8') ?></p>
-                            <p class="meta">都道府県: <?= htmlspecialchars($post['prefecture'], ENT_QUOTES, 'UTF-8') ?></p>
-                            <p class="meta">旅行日: <?= htmlspecialchars($post['travel_date'], ENT_QUOTES, 'UTF-8') ?></p>
-                            <?php 
-                                $body = htmlspecialchars($post['body'], ENT_QUOTES, 'UTF-8');
-                                $short_body = mb_substr($body, 0, 30);
-                                if (mb_strlen($body) > 30) {
-                                    $short_body .= '...';
-                                }
-                            ?>
-                            <p><?= nl2br($short_body) ?></p>
-                        </div>
-                    </a>
-                <?php endforeach; ?>
-            </div>
-        <?php else: ?>
-            <p>まだ投稿がありません。</p>
-        <?php endif; ?>
+<?php if($posts): ?>
+    <div class="post-list">
+        <?php foreach($posts as $post): ?>
+            <a href="post_detail.php?id=<?= $post['id'] ?>" class="post-card-link">
+                <div class="post-card">
+                    <?php if ($post['image_path']): ?>
+                        <img src="<?= htmlspecialchars($post['image_path'], ENT_QUOTES, 'UTF-8') ?>" alt="<?= htmlspecialchars($post['title'], ENT_QUOTES, 'UTF-8') ?>">
+                    <?php endif; ?>
+                    <h3><?= htmlspecialchars($post['title'], ENT_QUOTES, 'UTF-8') ?></h3>
+                    <p class="meta">投稿者: <?= htmlspecialchars($post['username'], ENT_QUOTES, 'UTF-8') ?></p>
+                    <p class="meta">都道府県: <?= htmlspecialchars($post['prefecture'], ENT_QUOTES, 'UTF-8') ?></p>
+                    <p class="meta">旅行日: <?= htmlspecialchars($post['travel_date'], ENT_QUOTES, 'UTF-8') ?></p>
+                    <?php 
+                        $body = htmlspecialchars($post['body'], ENT_QUOTES, 'UTF-8');
+                        $short_body = mb_substr($body, 0, 30);
+                        if (mb_strlen($body) > 30) {
+                            $short_body .= '...';
+                        }
+                    ?>
+                    <p><?= nl2br($short_body) ?></p>
+                </div>
+            </a>
+        <?php endforeach; ?>
+    </div>
+<?php else: ?>
+    <p>まだ投稿がありません。</p>
+<?php endif; ?>
 
-        <p><a href="index.php">← 投稿一覧へ戻る</a></p>
-    </body>
-</html>
+<?php include 'templates/footer.php'; ?>
