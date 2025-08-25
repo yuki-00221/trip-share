@@ -18,11 +18,17 @@ $stmt->execute();
 $user = $stmt->fetch();
 
 // get user's posts
-$stmt = $pdo->prepare('SELECT posts.*, users.username 
+$sort = $_GET['sort'] ?? 'created_at';
+$allowed_sorts = ['created_at', 'travel_date'];
+if (!in_array($sort, $allowed_sorts, true)) {
+    $sort = 'created_at';
+}
+
+$stmt = $pdo->prepare("SELECT posts.*, users.username 
                        FROM posts
                        JOIN users ON posts.user_id = users.id
                        WHERE posts.user_id = :uid
-                       ORDER BY posts.created_at DESC');
+                       ORDER BY posts.{$sort} DESC");
 $stmt->bindValue(':uid', $_SESSION['user_id'], PDO::PARAM_INT);
 $stmt->execute();
 $posts = $stmt->fetchAll();
@@ -60,6 +66,14 @@ include 'templates/header.php';
 <script src="assets/js/japan-map-init.js"></script>
 
 <h3>あなたの投稿一覧</h3>
+
+<div class="sort-options">
+    <a href="?sort=created_at"
+        class="<?= $sort === 'created_at' ? 'active' : '' ?>">投稿日順</a>
+    <a href="?sort=travel_date"
+        class="<?= $sort === 'travel_date' ? 'active' : '' ?>">旅行日順</a>
+</div>
+
 <?= render_post_list($posts); ?>
 
 <div class="new-post-btn">
