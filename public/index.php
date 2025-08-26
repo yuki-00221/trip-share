@@ -41,6 +41,24 @@ if ($search_keyword !== '') {
     $params[':kw'] = "%{$search_keyword}%";
 }
 
+if (!empty($_GET['created_from'])) {
+    $sql .= " AND posts.created_at >= :created_from";
+    $params[':created_from'] = $_GET['created_from'] . " 00:00:00";
+}
+if (!empty($_GET['created_to'])) {
+    $sql .= " AND posts.created_at <= :created_to";
+    $params[':created_to'] = $_GET['created_to'] . " 23:59:59";
+}
+
+if (!empty($_GET['travel_from'])) {
+    $sql .= " AND posts.travel_date >= :travel_from";
+    $params[':travel_from'] = $_GET['travel_from'];
+}
+if (!empty($_GET['travel_to'])) {
+    $sql .= " AND posts.travel_date <= :travel_to";
+    $params[':travel_to'] = $_GET['travel_to'];
+}
+
 $sql .= " ORDER BY posts.{$sort} DESC";
 
 $stmt = $pdo->prepare($sql);
@@ -59,7 +77,7 @@ include 'templates/header.php';
 
 <form method="get" class="search-form <?= ($search_user || $search_pref || $search_keyword) ? 'open' : '' ?>">
     <input type="text" name="user" placeholder="ユーザー名"
-           value="<?= htmlspecialchars($search_user) ?>">
+        value="<?= htmlspecialchars($search_user) ?>">
 
     <select name="pref">
         <option value="">すべての都道府県</option>
@@ -73,27 +91,40 @@ include 'templates/header.php';
     </select>
 
     <input type="text" name="q" placeholder="タイトル・本文を検索"
-           value="<?= htmlspecialchars($search_keyword) ?>">
+        value="<?= htmlspecialchars($search_keyword) ?>">
 
+    <div class="date-range">
+        <label>投稿日:</label>
+        <input type="date" name="created_from" value="<?= htmlspecialchars($_GET['created_from'] ?? '') ?>">
+        <span>〜</span>
+        <input type="date" name="created_to" value="<?= htmlspecialchars($_GET['created_to'] ?? '') ?>">
+    </div>
+
+    <div class="date-range">
+        <label>旅行日:</label>
+        <input type="date" name="travel_from" value="<?= htmlspecialchars($_GET['travel_from'] ?? '') ?>">
+        <span>〜</span>
+        <input type="date" name="travel_to" value="<?= htmlspecialchars($_GET['travel_to'] ?? '') ?>">
+    </div>
     <input type="hidden" name="sort" value="<?= htmlspecialchars($sort) ?>">
     <button type="submit">検索</button>
 </form>
 
 <script>
-document.addEventListener("DOMContentLoaded", function() {
-    const toggleBtn = document.querySelector(".search-toggle");
-    const form = document.querySelector(".search-form");
-    const arrow = toggleBtn.querySelector(".arrow");
+    document.addEventListener("DOMContentLoaded", function() {
+        const toggleBtn = document.querySelector(".search-toggle");
+        const form = document.querySelector(".search-form");
+        const arrow = toggleBtn.querySelector(".arrow");
 
-    if (form.classList.contains("open")) {
-        arrow.textContent = "▲";
-    }
+        if (form.classList.contains("open")) {
+            arrow.textContent = "▲";
+        }
 
-    toggleBtn.addEventListener("click", () => {
-        form.classList.toggle("open");
-        arrow.textContent = form.classList.contains("open") ? "▲" : "▼";
+        toggleBtn.addEventListener("click", () => {
+            form.classList.toggle("open");
+            arrow.textContent = form.classList.contains("open") ? "▲" : "▼";
+        });
     });
-});
 </script>
 
 <div class="sort-options">

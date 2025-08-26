@@ -188,6 +188,25 @@ h3 {
     transform: translateY(0);
 }
 
+.date-range {
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+    margin-bottom: 8px;
+}
+
+.date-range label {
+    white-space: nowrap;
+    font-size: 0.9rem;
+    margin-right: 4px;
+}
+
+.date-range input[type="date"] {
+    padding: 4px 6px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
 .sort-options {
     margin: 15px 0;
     text-align: left;
